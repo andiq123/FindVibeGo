@@ -22,7 +22,7 @@ func (m *MuzkanScrapperService) GetSongs(searchQuery string) ([]models.Song, err
 	songs := make([]models.Song, 0, 40)
 	collector.OnHTML(".files__wrapper", func(e *colly.HTMLElement) {
 		e.ForEach(".file", func(i int, e *colly.HTMLElement) {
-			id := uuid.NewString()
+			id := uuid.New()
 			image := e.ChildAttr("img", "data-src")
 			artist := e.ChildText("h4")
 			title := e.ChildText("h5")

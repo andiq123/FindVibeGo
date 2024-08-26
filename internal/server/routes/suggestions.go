@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"FindVibeGo/cmd/services"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (s *Server) getSuggestions(context *gin.Context) {
+func GetSuggestionsHandler(context *gin.Context) {
 	searchQuery := context.Query("q")
 	searchQuery, err := utils.CleanString(searchQuery)
 	if err != nil {

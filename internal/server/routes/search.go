@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"FindVibeGo/cmd/services"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Server) searchSongs(context *gin.Context) {
+func SearchSongsHandler(context *gin.Context) {
 	searchQuery := context.Query("q")
 	searchQuery, err := utils.CleanString(searchQuery)
 	if err != nil {

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"FindVibeGo/internal/database"
 	"fmt"
 	"net/http"
 	"os"
@@ -12,12 +13,21 @@ import (
 
 type Server struct {
 	port int
+
+	db database.Service
 }
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
 		port: port,
+
+		db: database.New(),
+	}
+
+	err := NewServer.db.CreateTables()
+	if err != nil {
+		return nil
 	}
 
 	// Declare Server config

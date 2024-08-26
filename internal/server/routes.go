@@ -1,6 +1,7 @@
 package server
 
 import (
+	"FindVibeGo/internal/server/routes"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,9 +10,9 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
-	r.GET("/ping", s.PingPongHandler)
-	r.GET("/searchSongs", s.searchSongs)
-	r.GET("/suggestions", s.getSuggestions)
+	r.GET("/ping", routes.PingPongHandler)
+	r.GET("/searchSongs", routes.SearchSongsHandler)
+	r.GET("/suggestions", routes.GetSuggestionsHandler)
 
 	return r
 }
