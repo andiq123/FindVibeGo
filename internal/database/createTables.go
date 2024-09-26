@@ -15,9 +15,9 @@ func (s *service) CreateTables() error {
 
 func createUsersTable() error {
 	stmt := `CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);`
+			id UUID PRIMARY KEY,
+			name VARCHAR(255) NOT NULL
+			);`
 	_, err := dbInstance.db.Exec(stmt)
 	if err != nil {
 		return err
