@@ -28,12 +28,9 @@ func (m *MuzkanScrapperService) GetSongs(searchQuery string) ([]models.Song, err
 			image := e.ChildAttr("img", "data-src")
 			link := e.ChildAttr("div[data-id]", "data-id")
 
-			artistAndTitle := strings.Split(e.ChildText("a"), " - ")
-
-			title := artistAndTitle[0]
-			var artist string
-			if len(artistAndTitle) > 1 {
-				artist = artistAndTitle[1]
+			title, artist, found := strings.Cut(e.ChildText("a"), " - ")
+			if !found {
+				artist = ""
 			}
 
 			song := models.Song{Id: id, Title: title, Artist: artist, Image: image, Link: link}
