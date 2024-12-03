@@ -22,7 +22,6 @@ func (m *MuzkanScrapperService) GetSongs(searchQuery string) ([]models.Song, err
 
 	songs := make([]models.Song, 40)
 	collector.OnHTML("tbody", func(e *colly.HTMLElement) {
-
 		e.ForEach("tr", func(i int, e *colly.HTMLElement) {
 			id := uuid.New()
 			image := e.ChildAttr("img", "data-src")
@@ -31,7 +30,6 @@ func (m *MuzkanScrapperService) GetSongs(searchQuery string) ([]models.Song, err
 			song := models.Song{Id: id, Title: title, Image: image, Link: link}
 			songs[i] = song
 		})
-
 	})
 
 	err := collector.Visit(m.muzkanLink + searchQuery)
