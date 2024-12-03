@@ -1,0 +1,15 @@
+meta {
+  name: Search Songs
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/searchSongs?q=zerodoi
+  body: none
+  auth: none
+}
+
+params:query {
+  q: zerodoi
+}

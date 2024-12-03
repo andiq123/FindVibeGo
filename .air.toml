@@ -1,13 +1,13 @@
 root = "."
 testdata_dir = "testdata"
-tmp_dir = "tmp"
+tmp_dir = "bin"
 
 [build]
   args_bin = []
-  bin = ".\\main.exe"
-  cmd = "make build"
+  bin = "bin\\main.exe"
+  cmd = "go build -o ./bin/main.exe ./cmd/api/"
   delay = 1000
-  exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+  exclude_dir = ["assets", "bin", "vendor", "testdata","music_cache"]
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
@@ -36,10 +36,16 @@ tmp_dir = "tmp"
 
 [log]
   main_only = false
+  silent = false
   time = false
 
 [misc]
   clean_on_exit = false
+
+[proxy]
+  app_port = 0
+  enabled = false
+  proxy_port = 0
 
 [screen]
   clear_on_rebuild = false

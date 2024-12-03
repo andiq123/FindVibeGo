@@ -3,9 +3,12 @@ package routes
 import (
 	"FindVibeGo/cmd/services"
 	"FindVibeGo/cmd/utils"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
+
+var suggestionsService = services.NewSuggestionsService()
 
 func GetSuggestionsHandler(context *gin.Context) {
 	searchQuery := context.Query("q")
@@ -14,10 +17,11 @@ func GetSuggestionsHandler(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	suggestionsService := services.NewSuggestionsService()
 	suggestions, err := suggestionsService.GetSuggestions(searchQuery)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
-	context.JSON(200, suggestions)
+
+	context.JSON(200, gin.H{"result": suggestions})
 }

@@ -3,6 +3,7 @@ package services
 import (
 	"FindVibeGo/cmd/models"
 	"FindVibeGo/cmd/scrapper"
+
 	"github.com/gocolly/colly/v2"
 	"github.com/google/uuid"
 )
@@ -12,26 +13,27 @@ type MuzkanScrapperService struct {
 }
 
 func NewMuzkanScrapperService() *MuzkanScrapperService {
-	muzkanLink := "https://muzkan.net/?q="
+	muzkanLink := "https://muzsky.net/search/"
 	return &MuzkanScrapperService{muzkanLink: muzkanLink}
 }
 
 func (m *MuzkanScrapperService) GetSongs(searchQuery string) ([]models.Song, error) {
 	collector := scrapper.GetInstance()
 
-	songs := make([]models.Song, 0, 40)
-	collector.OnHTML(".files__wrapper", func(e *colly.HTMLElement) {
-		e.ForEach(".file", func(i int, e *colly.HTMLElement) {
+	songs := make([]models.Song, 40)
+	collector.OnHTML("tbody", func(e *colly.HTMLElement) {
+
+		e.ForEach("tr", func(i int, e *colly.HTMLElement) {
 			id := uuid.New()
 			image := e.ChildAttr("img", "data-src")
-			artist := e.ChildText("h4")
-			title := e.ChildText("h5")
-			link := e.ChildAttr(".button", "mp3source")
-
-			song := models.Song{Id: id, Artist: artist, Title: title, Image: image, Link: link}
-			songs = append(songs, song)
+			title := e.ChildText("a")
+			link := e.ChildAttr("div[data-id]", "data-id")
+			song := models.Song{Id: id, Title: title, Image: image, Link: link}
+			songs[i] = song
 		})
+
 	})
+
 	err := collector.Visit(m.muzkanLink + searchQuery)
 	if err != nil {
 		return nil, err

@@ -48,10 +48,10 @@ func (s *SuggestionsService) GetSuggestions(searchQuery string) ([]string, error
 		return nil, err
 	}
 
-	results := make([]string, 0, len(data[1].([]any)))
-	for _, item := range data[1].([]any) {
+	results := make([]string, len(data[1].([]any)))
+	for i, item := range data[1].([]any) {
 		if str, ok := item.([]any)[0].(string); ok {
-			results = append(results, str)
+			results[i] = str
 		}
 	}
 
