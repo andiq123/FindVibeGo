@@ -3,6 +3,7 @@ package services
 import (
 	"FindVibeGo/cmd/models"
 	"FindVibeGo/cmd/scrapper"
+	"strings"
 
 	"github.com/gocolly/colly/v2"
 	"github.com/google/uuid"
@@ -25,9 +26,17 @@ func (m *MuzkanScrapperService) GetSongs(searchQuery string) ([]models.Song, err
 		e.ForEach("tr", func(i int, e *colly.HTMLElement) {
 			id := uuid.New()
 			image := e.ChildAttr("img", "data-src")
-			title := e.ChildText("a")
 			link := e.ChildAttr("div[data-id]", "data-id")
-			song := models.Song{Id: id, Title: title, Image: image, Link: link}
+
+			artistAndTitle := strings.Split(e.ChildText("a"), " - ")
+
+			title := artistAndTitle[0]
+			var artist string
+			if len(artistAndTitle) > 1 {
+				artist = artistAndTitle[1]
+			}
+
+			song := models.Song{Id: id, Title: title, Artist: artist, Image: image, Link: link}
 			songs[i] = song
 		})
 	})
